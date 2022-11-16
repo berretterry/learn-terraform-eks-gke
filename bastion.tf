@@ -9,3 +9,27 @@ resource "aws_instance" "eks_bastion" {
     }
   
 }
+
+provisioner "file" {
+    source = "eks_bastion_ssh.pem"
+    destination = "/home/ec2-user/eks_bastion_ssh.pem"
+    connection = {
+        type = "ssh"
+        user = "ec2-user"
+        private_key = file("eks_bastion_ssh.pem")
+        host = self.map_public_ip
+
+    }
+
+provisioner "remote-exec" {
+    inline = ["chmod 400 ~/eks_bastion_ssh.pem"]
+    connection {
+        type = "ssh"
+        user = "ec2-user"
+        private_key = "file(eks_bastion_ssh.pem)"
+        host = self.public.ip
+    }
+
+}
+
+}
