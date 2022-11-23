@@ -45,10 +45,9 @@ resource "aws_iam_role_policy_attachment" "cluster_AmazonEKSClusterPolicy" {
 resource "aws_eks_node_group" "worker_node_group" {
     cluster_name = aws_eks_cluster.eks_cluster.name
     node_group_name = "eks_workernodes"
-    node_role_arn = aws_iam_role.nodes.arn
+    node_role_arn = aws_iam_role.node.arn
     subnet_ids = aws_subnet.private[*].id
     instance_types = ["t3.micro"]
-    ami = "ami-04a616933df665b44"
     capacity_type = "ON_DEMAND"
     disk_size = 20
 
@@ -66,7 +65,7 @@ resource "aws_eks_node_group" "worker_node_group" {
 }
 #EKS node iam role
 resource "aws_iam_role" "node" {
-  name = "${var.project}-Worker-Role"
+  name = "eks-node-role"
 
   assume_role_policy = <<POLICY
 {

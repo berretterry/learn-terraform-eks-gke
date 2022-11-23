@@ -57,8 +57,8 @@ resource "aws_route_table" "public_rt" {
 }
 
 resource "aws_route_table_association" "internet_access" {
-    count = length(var.subnets_cidr)
-    subnet_id = element(aws_subnet.public_subnet.*.id,count.index)
+    count = length(var.azs)
+    subnet_id = element(aws_subnet.public[*].id,count.index)
     route_table_id = aws_route_table.public_rt.id
   
 }

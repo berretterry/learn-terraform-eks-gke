@@ -1,5 +1,5 @@
 resource "aws_security_group" "public_sg" { 
-    name_prefix = "worker_group"
+    name_prefix = "eks_public_group"
     vpc_id = aws_vpc.eks_vpc.id
     description = "security groupp for eks workers"
 
@@ -117,12 +117,12 @@ resource "aws_security_group_rule" "control_plane_outbound" {
 
 #EKS Security Group
 resource "aws_security_group" "eks_cluster" {
-    name = "eks_cluster_sg"
+    name = "eks-cluster-sg"
     description = "Cluster communication with works nodes"
     vpc_id = aws_vpc.eks_vpc.id
     
     tags = {
-      "Name" = "eks_cluster_sg"
+      "Name" = "eks-cluster-sg"
     }
   
 }
@@ -155,12 +155,12 @@ resource "aws_security_group" "eks_nodes" {
     description = "security group for nodes in the cluster"
     vpc_id = aws_vpc.eks_vpc.id
     
-    egress = [ {
-      cidr_blocks = [ "0.0.0.0/0" ]
-      from_port = 0
-      protocol = "-1"
-      to_port = 0
-    } ]
+   egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
     tags = {
       "Name" = "eks-node-sg"
