@@ -1,4 +1,15 @@
+terraform {
+  required_providers {
+    aws = {
+        source ="hashicorp/aws"
+        version = "~> 4.16"
+    }
+  }
+  required_version = ">=1.2.0"
+}
+
 provider "aws" {
+    profile = "default"
     region = "us-west-2"
-    shared_config_files = "/Users/berretterry/.aws/credentials"
+    shared_credentials_files = ["/Users/berretterry/.aws/credentials"]
 }
